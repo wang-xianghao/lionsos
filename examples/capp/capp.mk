@@ -38,6 +38,7 @@ MUSL := musllibc
 # MICRODOT := ${LIONSOS}/dep/microdot/src
 
 IMAGES := backend.elf \
+	nfs.elf \
 	eth_driver.elf network_virt_rx.elf network_virt_tx.elf copy.elf \
 	uart_driver.elf serial_virt_tx.elf \
 	timer_driver.elf
