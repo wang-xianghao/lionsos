@@ -177,4 +177,15 @@
         <end pd="nfs" id="0"/>
     </channel>
 
+    <!-- Ehternet message -->
+    <channel>
+        <end pd="eth" id="1" />
+        <end pd="eth_virt_tx" id="0" />
+    </channel>
+
+    <channel>
+        <end pd="eth_virt_tx" id="1" />
+        <end pd="nfs" id="3" />
+    </channel>
+
 </system>
