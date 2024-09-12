@@ -37,9 +37,7 @@ MUSL_SRC := $(LIONSOS)/dep/musllibc
 MUSL := musllibc
 # MICRODOT := ${LIONSOS}/dep/microdot/src
 
-IMAGES := timer_driver.elf eth_driver.elf nfs.elf \
-	  copy.elf network_virt_rx.elf network_virt_tx.elf \
-	  uart_driver.elf serial_virt_tx.elf
+IMAGES := backend.elf
 # IMAGES := timer_driver.elf eth_driver.elf micropython.elf nfs.elf \
 # 	  copy.elf network_virt_rx.elf network_virt_tx.elf \
 # 	  uart_driver.elf serial_virt_tx.elf
@@ -78,6 +76,14 @@ CHECK_FLAGS_BOARD_MD5:=.board_cflags-$(shell echo -- ${CFLAGS} ${BOARD} ${MICROK
 ${CHECK_FLAGS_BOARD_MD5}:
 	-rm -f .board_cflags-*
 	touch $@
+
+backend.elf: 
+	make -C $(LIONSOS)/components/microkitlibc -j$(nproc) \
+			MICROKIT_SDK=$(MICROKIT_SDK) \
+			MICROKIT_BOARD=$(MICROKIT_BOARD) \
+			MICROKIT_CONFIG=$(MICROKIT_CONFIG) \
+			BUILD=$(abspath .) \
+			CONFIG_INCLUDE=$(abspath $(CONFIG_INCLUDE))
 
 # micropython.elf: mpy-cross manifest.py webserver.py config.py \
 # 		${MICRODOT} ${LIONSOS}/dep/libmicrokitco/Makefile
