@@ -179,6 +179,11 @@
 
     <!-- Ehternet message -->
     <channel>
+        <end pd="eth" id="2" />
+        <end pd="eth_virt_rx" id="0" />
+    </channel>
+
+    <channel>
         <end pd="eth" id="1" />
         <end pd="eth_virt_tx" id="0" />
     </channel>
@@ -186,6 +191,22 @@
     <channel>
         <end pd="eth_virt_tx" id="1" />
         <end pd="nfs" id="3" />
+    </channel>
+
+    <channel>
+        <end pd="eth_virt_rx" id="1" />
+        <end pd="eth_copy_nfs" id="0" />
+    </channel>
+
+    <channel>
+        <end pd="eth_copy_nfs" id="1" />
+        <end pd="nfs" id="2" />
+    </channel>
+    
+    <!-- Timer message -->
+    <channel>
+        <end pd="timer_driver" id="3" />
+        <end pd="nfs" id="9" />
     </channel>
 
 </system>
