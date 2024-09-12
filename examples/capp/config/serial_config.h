@@ -21,7 +21,7 @@
 #define UART_DEFAULT_BAUD 115200
 
 /* One read/write client, one write only client */
-#define SERIAL_CLI0_NAME "micropython"
+#define SERIAL_CLI0_NAME "microkitlibc"
 #define SERIAL_CLI1_NAME "nfs"
 #define SERIAL_VIRT_TX_NAME "serial_virt_tx"
 

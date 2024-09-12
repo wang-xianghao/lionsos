@@ -8,7 +8,7 @@
 #define NUM_NETWORK_CLIENTS 2
 
 #define CLI0_NAME "nfs"
-#define CLI1_NAME "micropython"
+#define CLI1_NAME "microkitlibc"
 #define COPY0_NAME "eth_copy_nfs"
 #define COPY1_NAME "eth_copy_mp"
 #define VIRT_RX_NAME "eth_virt_rx"

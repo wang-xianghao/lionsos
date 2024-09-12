@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <system>
     <memory_region name="eth" size="0x10_000" phys_addr="0xa003000" />
+    <memory_region name="uart" size="0x1_000" phys_addr="0x9000000" />
 
     <!-- eth driver/device ring buffer mechanism -->
     <memory_region name="hw_ring_buffer" size="0x10_000" />
@@ -29,6 +30,18 @@
     <memory_region name="eth_tx_active_nfs" size="0x200_000" page_size="0x200_000"/>
     <memory_region name="eth_tx_free_micropython" size="0x200_000" page_size="0x200_000"/>
     <memory_region name="eth_tx_active_micropython" size="0x200_000" page_size="0x200_000"/>
+
+    <!-- serial data regions -->
+    <memory_region name="serial_tx_data_driver" size="0x4_000" />
+    <memory_region name="serial_tx_data_micropython" size="0x2_000" />
+    <memory_region name="serial_tx_data_nfs" size="0x2_000" />
+
+    <!-- shared memory for serial virt/client queue mechanism -->
+    <memory_region name="serial_tx_queue_micropython" size="0x1_000" />
+    <memory_region name="serial_tx_queue_nfs" size="0x1_000" />
+
+    <!-- shared memory for serial driver/serial virt queue mechanism -->
+    <memory_region name="serial_tx_queue_driver" size="0x1_000" />
 
     <protection_domain name="client" priority="1">
         <program_image path="backend.elf" />
@@ -82,5 +95,26 @@
     <protection_domain name="timer_driver" priority="150" pp="true" passive="true">
         <program_image path="timer_driver.elf" />
         <irq irq="30" id="0" /> <!-- timer interrupt -->
+    </protection_domain>
+
+    <protection_domain name="uart_driver" priority="100">
+        <program_image path="uart_driver.elf" />
+        <map mr="uart" vaddr="0x5_000_000" perms="rw" cached="false" setvar_vaddr="uart_base" />
+
+        <map mr="serial_tx_queue_driver" vaddr="0x4_001_000" perms="rw" cached="true" setvar_vaddr="tx_queue" />
+        <map mr="serial_tx_data_driver" vaddr="0x4_004_000" perms="rw" cached="true" setvar_vaddr="tx_data" />
+
+        <irq irq="33" id="0" /> <!-- UART interrupt -->
+    </protection_domain>
+
+    <protection_domain name="serial_virt_tx" priority="99">
+        <program_image path="serial_virt_tx.elf" />
+        <map mr="serial_tx_queue_driver" vaddr="0x4_000_000" perms="rw" cached="true" setvar_vaddr="tx_queue_drv" />
+        <map mr="serial_tx_queue_micropython" vaddr="0x4_001_000" perms="rw" cached="true" setvar_vaddr="tx_queue_cli0" />
+        <map mr="serial_tx_queue_nfs" vaddr="0x4_002_000" perms="rw" cached="true"/>
+
+        <map mr="serial_tx_data_driver" vaddr="0x4_003_000" perms="rw" cached="true" setvar_vaddr="tx_data_drv" />
+        <map mr="serial_tx_data_micropython" vaddr="0x4_007_000" perms="r" cached="true" setvar_vaddr="tx_data_cli0" />
+        <map mr="serial_tx_data_nfs" vaddr="0x4_009_000" perms="r" cached="true"/>
     </protection_domain>
 </system>
