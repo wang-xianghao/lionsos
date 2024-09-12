@@ -56,6 +56,9 @@
 
     <protection_domain name="client" priority="1">
         <program_image path="backend.elf" />
+        
+        <map mr="serial_tx_queue_micropython" vaddr="0x60_000_000" perms="rw" cached="true" setvar_vaddr="serial_tx_queue" />
+        <map mr="serial_tx_data_micropython" vaddr="0x60_002_000" perms="rw" cached="true" setvar_vaddr="serial_tx_data" />
     </protection_domain>
 
     <protection_domain name="eth" priority="110" budget="100" period="400">
@@ -157,4 +160,15 @@
         <map mr="nfs_completion_queue" vaddr="0x7_810_000" perms="rw" cached="true" setvar_vaddr="completion_queue" />
         <map mr="shared_nfs_micropython" vaddr="0x7_900_000" perms="rw" cached="true" setvar_vaddr="client_share" />
     </protection_domain>
+
+    <channel>
+        <end pd="uart_driver" id="1"/>
+        <end pd="serial_virt_tx" id="0"/>
+    </channel>
+
+    <channel>
+        <end pd="serial_virt_tx" id="1"/>
+        <end pd="client" id="9"/>
+    </channel>
+
 </system>
