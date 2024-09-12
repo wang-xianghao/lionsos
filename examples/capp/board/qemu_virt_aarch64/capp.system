@@ -78,4 +78,9 @@
         <setvar symbol="buffer_data_region_cli0_paddr" region_paddr="eth_tx_buffer_data_region_nfs" />
         <setvar symbol="buffer_data_region_cli1_paddr" region_paddr="eth_tx_buffer_data_region_micropython" />
     </protection_domain>
+
+    <protection_domain name="timer_driver" priority="150" pp="true" passive="true">
+        <program_image path="timer_driver.elf" />
+        <irq irq="30" id="0" /> <!-- timer interrupt -->
+    </protection_domain>
 </system>
