@@ -56,7 +56,7 @@
 
     <protection_domain name="client" priority="1">
         <program_image path="backend.elf" />
-        
+
         <map mr="serial_tx_queue_micropython" vaddr="0x60_000_000" perms="rw" cached="true" setvar_vaddr="serial_tx_queue" />
         <map mr="serial_tx_data_micropython" vaddr="0x60_002_000" perms="rw" cached="true" setvar_vaddr="serial_tx_data" />
     </protection_domain>
@@ -161,6 +161,7 @@
         <map mr="shared_nfs_micropython" vaddr="0x7_900_000" perms="rw" cached="true" setvar_vaddr="client_share" />
     </protection_domain>
 
+    <!-- Serial message -->
     <channel>
         <end pd="uart_driver" id="1"/>
         <end pd="serial_virt_tx" id="0"/>
@@ -169,6 +170,11 @@
     <channel>
         <end pd="serial_virt_tx" id="1"/>
         <end pd="client" id="9"/>
+    </channel>
+
+    <channel>
+        <end pd="serial_virt_tx" id="2"/>
+        <end pd="nfs" id="0"/>
     </channel>
 
 </system>
