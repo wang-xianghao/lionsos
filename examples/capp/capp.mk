@@ -37,7 +37,8 @@ MUSL_SRC := $(LIONSOS)/dep/musllibc
 MUSL := musllibc
 # MICRODOT := ${LIONSOS}/dep/microdot/src
 
-IMAGES := backend.elf eth_driver.elf
+IMAGES := backend.elf \
+	eth_driver.elf network_virt_rx.elf network_virt_tx.elf
 # IMAGES := timer_driver.elf eth_driver.elf micropython.elf nfs.elf \
 # 	  copy.elf network_virt_rx.elf network_virt_tx.elf \
 # 	  uart_driver.elf serial_virt_tx.elf
