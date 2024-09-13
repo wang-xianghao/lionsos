@@ -118,6 +118,18 @@
         <map mr="eth_rx_buffer_data_region_nfs" vaddr="0x2_a00_000" perms="rw" cached="true" setvar_vaddr="cli_buffer_data_region" />
     </protection_domain>
 
+    <protection_domain name="eth_copy_mp" priority="97" budget="20000" >
+        <program_image path="copy.elf" />
+        <map mr="eth_rx_free_copy_micropython" vaddr="0x2_000_000" perms="rw" cached="true" setvar_vaddr="rx_free_virt" />
+        <map mr="eth_rx_active_copy_micropython" vaddr="0x2_200_000" perms="rw" cached="true" setvar_vaddr="rx_active_virt" />
+
+        <map mr="eth_rx_free_micropython" vaddr="0x2_400_000" perms="rw" cached="true" setvar_vaddr="rx_free_cli" />
+        <map mr="eth_rx_active_micropython" vaddr="0x2_600_000" perms="rw" cached="true" setvar_vaddr="rx_active_cli" />
+
+        <map mr="eth_rx_buffer_data_region" vaddr="0x2_800_000" perms="r" cached="true" setvar_vaddr="virt_buffer_data_region" />
+        <map mr="eth_rx_buffer_data_region_micropython" vaddr="0x2_a00_000" perms="rw" cached="true" setvar_vaddr="cli_buffer_data_region" />
+    </protection_domain>
+
     <protection_domain name="timer_driver" priority="150" pp="true" passive="true">
         <program_image path="timer_driver.elf" />
         <irq irq="30" id="0" /> <!-- timer interrupt -->
@@ -202,6 +214,17 @@
         <end pd="eth_copy_nfs" id="1" />
         <end pd="nfs" id="2" />
     </channel>
+
+    <channel>
+        <end pd="eth_virt_rx" id="2" />
+        <end pd="eth_copy_mp" id="0" />
+    </channel>
+
+    <channel>
+        <end pd="eth_copy_mp" id="1" />
+        <end pd="client" id="2" />
+    </channel>
+
     
     <!-- Timer message -->
     <channel>
