@@ -13,7 +13,7 @@ LD := aarch64-none-elf-ld
 LIONSOS := $(abspath ../../)
 SDDF := $(LIONSOS)/dep/sddf
 MICROKITLIBC_SRC_DIR := $(LIONSOS)/components/microkitlibc
-# LIBMICROKITCO_PATH := $(LIONSOS)/dep/libmicrokitco
+LIBMICROKITCO_PATH := $(LIONSOS)/dep/libmicrokitco
 # LWIP := $(SDDF)/network/ipstacks/lwip
 # Path to micropython source code
 # MICROPYTHON_SRC := $(LIONSOS)/dep/micropython
@@ -67,16 +67,19 @@ LIBS += -lmicrokit -Tmicrokit.ld $(BUILD)/libsddf_util_debug.a
 # LIBS += -lm -lmicrokit -Tmicrokit.ld -lc $(BUILD)/libsddf_util_debug.a
 
 # # Include libmicrokitco for blocking in Micropython
-# BUILD_DIR=$(BUILD)
-# TARGET=aarch64-none-elf
-# LLVM=1
-# LIBMICROKITCO_PATH := $(LIONSOS)/dep/libmicrokitco
-# LIBMICROKITCO_OPT_PATH := $(LIONSOS)/components/micropython
-# LIBMICROKITCO_OBJ := $(BUILD_DIR)/libmicrokitco/libmicrokitco.a
+BUILD_DIR=$(BUILD)
+TARGET=aarch64-none-elf
+LLVM=1
+LIBMICROKITCO_PATH := $(LIONSOS)/dep/libmicrokitco
+LIBMICROKITCO_OPT_PATH := $(LIONSOS)/components/micropython
+LIBMICROKITCO_OBJ := $(BUILD_DIR)/libmicrokitco/libmicrokitco.a
 
-# export LIBMICROKITCO_PATH TARGET MICROKIT_SDK BUILD_DIR MICROKIT_BOARD MICROKIT_CONFIG CPU LLVM
-# $(LIBMICROKITCO_OBJ):
-# 	make -f $(LIBMICROKITCO_PATH)/Makefile LIBMICROKITCO_OPT_PATH=$(LIBMICROKITCO_OPT_PATH)
+export LIBMICROKITCO_PATH TARGET MICROKIT_SDK BUILD_DIR MICROKIT_BOARD MICROKIT_CONFIG CPU LLVM
+
+all: $(BUILD)/backend.elf
+
+$(LIBMICROKITCO_OBJ):
+	make -f $(LIBMICROKITCO_PATH)/Makefile LIBMICROKITCO_OPT_PATH=$(LIBMICROKITCO_OPT_PATH)
 
 # COREFILES, CORE4FILES: The minimum set of files needed for lwIP.
 # COREFILES=core/init.c \
@@ -181,7 +184,6 @@ LIBS += -lmicrokit -Tmicrokit.ld $(BUILD)/libsddf_util_debug.a
 # Define the required object files.
 # OBJ = $(PY_CORE_O) $(addprefix $(BUILD)/, $(SRC_C:.c=.o)) $(LWIP_OBJ)
 
-all: $(BUILD)/backend.elf
 # all: directories $(BUILD)/micropython.elf
 
 # $(BUILD)/micropython/lwip/%.o: $(LWIP)/src/%.c
@@ -199,7 +201,7 @@ $(BUILD)/app_src:
 $(BUILD)/app_src/%.o: $(MICROKITLIBC_APP_SRC_DIR)/%.c $(BUILD)/app_src
 	$(CC) -c $(CFLAGS) $< -o $@
 
-$(BUILD)/backend.elf: $(BUILD)/backend.o $(APP_OBJECTS)
+$(BUILD)/backend.elf: $(BUILD)/backend.o $(APP_OBJECTS) $(LIBMICROKITCO_OBJ)
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 
 # $(BUILD)/micropython.elf: $(OBJ) $(LIBMICROKITCO_OBJ)

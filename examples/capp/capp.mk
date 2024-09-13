@@ -81,7 +81,7 @@ ${CHECK_FLAGS_BOARD_MD5}:
 	-rm -f .board_cflags-*
 	touch $@
 
-backend.elf: 
+backend.elf: ${LIONSOS}/dep/libmicrokitco/Makefile
 	make -C $(LIONSOS)/components/microkitlibc -j$(nproc) \
 			MICROKIT_SDK=$(MICROKIT_SDK) \
 			MICROKIT_BOARD=$(MICROKIT_BOARD) \
