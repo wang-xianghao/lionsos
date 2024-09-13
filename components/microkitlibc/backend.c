@@ -3,6 +3,11 @@
 #include <sddf/serial/queue.h>
 #include <serial_config.h>
 #include <sddf/util/printf.h>
+#include <libmicrokitco.h>
+
+#define MICROPY_STACK_SIZE (0x100000)
+static char mp_stack[MICROPY_STACK_SIZE];
+static co_control_t co_controller_mem;
 
 extern int app_main(void);
 
@@ -23,7 +28,8 @@ void init(void) {
                             serial_rx_queue, serial_rx_data,
                             &serial_tx_queue_handle, serial_tx_queue,
                             serial_tx_data);
-
+                            
+    microkit_cothread_init(&co_controller_mem, MICROPY_STACK_SIZE, mp_stack);
     int rc = app_main();
 
     sddf_dprintf("Return code %d\n", rc);

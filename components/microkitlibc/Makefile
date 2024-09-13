@@ -39,6 +39,7 @@ CFLAGS += \
 	-I$(SDDF) \
 	-I$(SDDF)/include \
 	-I$(BOARD_DIR)/include \
+	-I$(LIBMICROKITCO_PATH) \
 	-I$(LIONSOS)/include \
 	-I$(CONFIG_INCLUDE) \
 	-I$(MICROKIT_APP_SRC_DIR) \
