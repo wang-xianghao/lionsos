@@ -38,6 +38,7 @@ export MICROKIT_BOARD := $(MICROKIT_BOARD)
 export CONFIG_INCLUDE ?= $(abspath config)
 export WEBSERVER_SRC_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export LIONSOS := $(abspath ../..)
+MICROKITLIBC_APP_SRC_DIR := $(realpath $(MICROKITLIBC_APP_SRC_DIR))
 
 IMAGE_FILE := $(BUILD_DIR)/capp.img
 # IMAGE_FILE := $(BUILD_DIR)/webserver.img

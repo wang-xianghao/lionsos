@@ -1,3 +1,8 @@
+# Require MICROKIT_APP_SRC_DIR
+ifeq ($(strip $(MICROKITLIBC_APP_SRC_DIR)),)
+$(error MICROKITLIBC_APP_SRC_DIR must be specified)
+endif
+
 ifeq ($(strip $(CONFIG_INCLUDE)),)
 $(error CONFIG_INCLUDE must be specified)
 endif
@@ -36,6 +41,7 @@ CFLAGS += \
 	-I$(BOARD_DIR)/include \
 	-I$(LIONSOS)/include \
 	-I$(CONFIG_INCLUDE) \
+	-I$(MICROKIT_APP_SRC_DIR) \
 	-ffreestanding \
 	-mtune=$(CPU)
 # CFLAGS += \
@@ -184,7 +190,16 @@ all: $(BUILD)/backend.elf
 $(BUILD)/backend.o: $(MICROKITLIBC_SRC_DIR)/backend.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
-$(BUILD)/backend.elf: $(BUILD)/backend.o
+APP_SOURCES := $(wildcard $(MICROKITLIBC_APP_SRC_DIR)/*.c)
+APP_OBJECTS := $(patsubst $(MICROKITLIBC_APP_SRC_DIR)/%.c, $(BUILD)/app_src/%.o, $(APP_SOURCES))
+
+$(BUILD)/app_src:
+	mkdir -p $(BUILD)/app_src
+
+$(BUILD)/app_src/%.o: $(MICROKITLIBC_APP_SRC_DIR)/%.c $(BUILD)/app_src
+	$(CC) -c $(CFLAGS) $< -o $@
+
+$(BUILD)/backend.elf: $(BUILD)/backend.o $(APP_OBJECTS)
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 
 # $(BUILD)/micropython.elf: $(OBJ) $(LIBMICROKITCO_OBJ)

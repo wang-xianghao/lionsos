@@ -4,6 +4,8 @@
 #include <serial_config.h>
 #include <sddf/util/printf.h>
 
+extern int app_main(void);
+
 /*
  * Shared regions for Serial communication
  */
@@ -21,8 +23,13 @@ void init(void) {
                             serial_rx_queue, serial_rx_data,
                             &serial_tx_queue_handle, serial_tx_queue,
                             serial_tx_data);
+
+    int rc = app_main();
+
+    sddf_dprintf("Return code %d\n", rc);
 }
 
 void notified(microkit_channel ch) {
-    
+
+    sddf_dprintf("Channel %d\n", ch);
 }

@@ -87,7 +87,8 @@ backend.elf:
 			MICROKIT_BOARD=$(MICROKIT_BOARD) \
 			MICROKIT_CONFIG=$(MICROKIT_CONFIG) \
 			BUILD=$(abspath .) \
-			CONFIG_INCLUDE=$(abspath $(CONFIG_INCLUDE))
+			CONFIG_INCLUDE=$(abspath $(CONFIG_INCLUDE)) \
+			MICROKITLIBC_APP_SRC_DIR=$(MICROKITLIBC_APP_SRC_DIR)
 
 # micropython.elf: mpy-cross manifest.py webserver.py config.py \
 # 		${MICRODOT} ${LIONSOS}/dep/libmicrokitco/Makefile
