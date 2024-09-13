@@ -21,6 +21,12 @@ serial_queue_t *serial_tx_queue;
 serial_queue_handle_t serial_rx_queue_handle;
 serial_queue_handle_t serial_tx_queue_handle;
 
+void t_mc_entrypoint(void) {
+    int rc = app_main();
+    
+    sddf_dprintf("Return code %d\n", rc);
+}
+
 void init(void) {
     microkit_dbg_puts("Microkit C Library initializes...");
 
@@ -30,9 +36,16 @@ void init(void) {
                             serial_tx_data);
                             
     microkit_cothread_init(&co_controller_mem, MICROPY_STACK_SIZE, mp_stack);
-    int rc = app_main();
 
-    sddf_dprintf("Return code %d\n", rc);
+    if (microkit_cothread_spawn(t_mc_entrypoint, NULL) == LIBMICROKITCO_NULL_HANDLE) {
+        // printf("MP|ERROR: Cannot initialise Microkitlibc cothread\n");
+        sddf_dprintf("MP|ERROR: Cannot initialise Microkitlibc cothread\n");
+        
+        while (true) {}
+    }
+
+    // Run the Microkitlibc cothread
+    microkit_cothread_yield();
 }
 
 void notified(microkit_channel ch) {
