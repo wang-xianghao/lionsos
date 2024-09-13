@@ -216,6 +216,11 @@
     </channel>
 
     <channel>
+        <end pd="eth_virt_tx" id="2" />
+        <end pd="client" id="3" />
+    </channel>
+
+    <channel>
         <end pd="eth_virt_rx" id="2" />
         <end pd="eth_copy_mp" id="0" />
     </channel>
@@ -230,6 +235,16 @@
     <channel>
         <end pd="timer_driver" id="3" />
         <end pd="nfs" id="9" />
+    </channel>
+
+    <channel>
+        <end pd="timer_driver" id="1" />
+        <end pd="client" id="1" />
+    </channel>
+
+    <channel>
+        <end pd="client" id="7" />
+        <end pd="nfs" id="7" />
     </channel>
 
 </system>
