@@ -15,10 +15,13 @@
 	branch = sel4
 [submodule "libnfs"]
 	path = dep/libnfs
-	url = https://github.com/au-ts/libnfs.git
+	url = https://github.com/wang-xianghao/libnfs.git
 [submodule "microdot"]
 	path = dep/microdot
 	url = https://github.com/miguelgrinberg/microdot.git
 [submodule "libmicrokitco"]
 	path = dep/libmicrokitco
 	url = https://github.com/au-ts/libmicrokitco.git
+[submodule "dep/picolibc"]
+	path = dep/picolibc
+	url = https://github.com/wang-xianghao/picolibc.git
