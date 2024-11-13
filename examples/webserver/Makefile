@@ -24,6 +24,14 @@ $(error "WEBSITE_DIR must be specified: this is the filesystem path of the \
 directory containing the website's files, relative to the NFS export")
 endif
 
+ifeq ($(strip $(PICO)),)
+$(error "PICO must be specified")
+endif
+
+ifeq ($(strip $(LIBNFS)),)
+$(error "LIBNFS must be specified")
+endif
+
 ifeq ($(strip $(LIBGCC)),)
 export LIBGCC:=$(dir $(realpath $(shell aarch64-none-elf-gcc --print-file-name libgcc.a)))
 endif

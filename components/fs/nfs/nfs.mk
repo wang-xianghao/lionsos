@@ -13,7 +13,7 @@
 
 NFS_DIR := $(LIONSOS)/components/fs/nfs
 LWIP := $(SDDF)/network/ipstacks/lwip/src
-LIBNFS := $(LIONSOS)/dep/libnfs
+# LIBNFS := $(LIONSOS)/dep/libnfs
 
 CFLAGS_nfs := \
 	-DNFS_SERVER="\"$(NFS_SERVER)\"" \
@@ -43,12 +43,17 @@ $(CHECK_NFS_FLAGS_MD5):
 	-rm -f .nfs_cflags-*
 	touch $@
 
-$(LIBNFS)/CMakeLists.txt $(LIBNFS)/include:
-	cd $(LIONSOS); git submodule update --init dep/libnfs
+# $(LIBNFS)/CMakeLists.txt $(LIBNFS)/include:
+# 	cd $(LIONSOS); git submodule update --init dep/libnfs
 
-$(LIBNFS)/CMakeLists.txt:
-	cd ${LIONSOS}; git submodule update --init dep/libnfs
-libnfs/lib/libnfs.a: $(LIBNFS)/CMakeLists.txt $(MUSL)/lib/libc.a
+# $(LIBNFS)/CMakeLists.txt:
+# 	cd ${LIONSOS}; git submodule update --init dep/libnfs
+
+# libnfs/lib/libnfs.a: $(LIBNFS)/CMakeLists.txt $(MUSL)/lib/libc.a
+# 	MUSL=$(abspath $(MUSL)) cmake -S $(LIBNFS) -B libnfs
+# 	cmake --build libnfs
+
+libnfs/lib/libnfs.a: $(MUSL)/lib/libc.a
 	MUSL=$(abspath $(MUSL)) cmake -S $(LIBNFS) -B libnfs
 	cmake --build libnfs
 
@@ -62,7 +67,7 @@ $(NFS_DIRS):
 
 $(NFS_OBJ): $(CHECK_NFS_FLAGS_MD5)
 $(NFS_OBJ): $(MUSL)/lib/libc.a
-$(NFS_OBJ): $(LIBNFS)/include
+# $(NFS_OBJ): $(LIBNFS)/include
 $(NFS_OBJ): |$(NFS_DIRS)
 $(NFS_OBJ): CFLAGS += $(CFLAGS_nfs)
 
