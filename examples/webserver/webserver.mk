@@ -103,6 +103,9 @@ $(MUSL)/lib/libc.a $(MUSL)/include: ${MUSL}/Makefile
 		STAGE_DIR=$(abspath $(MUSL)) \
 		SOURCE_DIR=.
 
+$(PICO)/lib/libc.a:
+	make -C $(PICO)
+
 %.o: %.c
 	${CC} ${CFLAGS} -c -o $@ $<
 
