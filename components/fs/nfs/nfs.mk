@@ -54,13 +54,13 @@ $(CHECK_NFS_FLAGS_MD5):
 # 	cmake --build libnfs
 
 libnfs/lib/libnfs.a: $(PICO)/lib/libc.a
-	PICO=$(abspath $(PICO)) LIBGCC=$(LIBGCC) cmake -S $(LIBNFS) -B libnfs
+	MUSL=$(abspath $(MUSL)) PICO=$(abspath $(PICO)) LIBGCC=$(LIBGCC) cmake -S $(LIBNFS) -B libnfs
 	cmake --build libnfs
 
 nfs.elf: LDFLAGS += -L$(LIBGCC)
 nfs.elf: LIBS += -lgcc
 nfs.elf: $(NFS_OBJ) $(PICO)/lib/libc.a libnfs/lib/libnfs.a
-	$(LD) $(LDFLAGS) -o $@ $(LIBS) $^
+	$(LD) $(LDFLAGS) --error-limit=0  -o $@ $(LIBS) $^ 
 
 $(NFS_DIRS):
 	mkdir -p $@
